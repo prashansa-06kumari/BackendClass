@@ -1,80 +1,27 @@
+//when you should use post req
+//if you want to change the state of a server you send post req.
+//if this req change the state of server[adding data,deleting prvious data,updating any data]
+//data are not visible in url in post req
+//client will have name,email,password in formd then post("addresusers") will have a body where body={name,email,password},and in server adduser req.body
+
 const express = require("express");
-const app=express();
+const app = express();
+app.use(express.urlencoded({extended:true}))
+let userData=[]
 
-// app.get("/profile",(req,res)=>{
-//     const {username,age} = req.query;
-//     console.log(username);
-//     res.send("profile page of"+" "+username+" "+age)
-// })
+app.get("/adduser",(req,res)=>{
+    res.sendFile(__dirname+"/register.html")
 
-// app.get("/profile/:id/:username",(req,res)=>{
-//     const {id,username} = req.params;
-//     //find in database
-//     res.send("profile page of" + " "+id+" "+username)
-// })
+})
 
-app.listen(2800,(req,res)=>{
+app.post("/adduser",(req,res)=>{
+    let {name,email,password} = req.body;
+    userData.push({name:name,email:email,password:password});
+    console.log(name,email,password);
+    res.send(userData);
+
+})
+
+app.listen(1874,()=>{
     console.log("server started");
 })
-
-
-let usersData=[
-    {
-        id:1,
-        name:"Nitesh",
-        address:"Delhi"
-    },
-    {
-        id:2,
-        name:"Ritik",
-        address:"Faridabad"
-    },
-    {
-        id:3,
-        name:"Neha",
-        address:"Punjab"
-    },
-]
-app.get("/allusers",(req,res)=>{
-    res.send(usersData);
-})
-
-app.get("/getuserbyId",(req,res)=>{
-    // const id = req.query.id
-    const {id} = req.query;
-    for(let i=0;i<usersData.length;i++){
-        if(usersData[i].id==id){
-            return res.send(usersData[i])
-        }
-    }
-    res.send("User not found")
-
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
